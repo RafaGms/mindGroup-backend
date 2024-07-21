@@ -9,6 +9,8 @@ const upload = multer(uploadsConfig);
 
 
 router.post('/users', upload.single("images"), userController.registerUser);
+router.post('/signIn', userController.signInUser);
+router.post('/token', userController.tokenUser);
 
 
 
