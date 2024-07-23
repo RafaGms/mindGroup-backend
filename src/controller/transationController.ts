@@ -11,6 +11,9 @@ interface IRegisterTransactionRequest extends Request {
       userId: number;
    }
 }
+interface ITransationsParams {
+   id: number;
+}
 
 export default {
    async registerTransaction(req: IRegisterTransactionRequest, res: Response): Promise<Response> {
@@ -48,5 +51,18 @@ export default {
          }
       }
       return res.status(500).json({ error: 'Erro inesperado.' });
+   },
+   async getAllTransactionById(req: Request<ITransationsParams>, res: Response): Promise<Response> {
+      const { id } = req.params;
+
+      try {
+         const transactions = await prisma.transaction.findMany({
+            where: { userId: Number(id) },
+         });
+         return res.status(200).json(transactions);
+      } catch (error) {
+         console.error(error);
+         return res.status(500).json({ error: 'Erro ao buscar lista de transações.' });
+      }
    }
 }

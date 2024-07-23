@@ -13,8 +13,9 @@ router.post('/users', upload.single("images"), userController.registerUser);
 router.post('/signIn', userController.signInUser);
 router.post('/token', userController.tokenUser);
 
+router.post('/transation', transationController.registerTransaction);
+router.get('/transations/:id', transationController.getAllTransactionById);
 
-router.post('/transation', transationController.registerTransaction)
 
 
 
