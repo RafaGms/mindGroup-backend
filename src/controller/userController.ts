@@ -95,7 +95,6 @@ export default {
       }
    },
 
-
    async registerUser(req: IregisterUserRequest, res: Response): Promise<Response> {
       const { name, email, password } = req.body;
       const requestImage = req.file as Express.Multer.File;
