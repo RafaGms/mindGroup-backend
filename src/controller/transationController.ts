@@ -64,5 +64,19 @@ export default {
          console.error(error);
          return res.status(500).json({ error: 'Erro ao buscar lista de transações.' });
       }
+   },
+
+   async delete(req: Request<ITransationsParams>, res: Response): Promise<Response> {
+      const { id } = req.params;
+
+      try {
+         await prisma.transaction.delete({
+            where: { id: Number(id) }
+         });
+
+         return res.status(204).send();
+      } catch (error) {
+         return res.status(500).json({ error: 'Erro ao deletar Transação.' });
+      }
    }
 }

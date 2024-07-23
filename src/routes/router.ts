@@ -15,6 +15,7 @@ router.post('/token', userController.tokenUser);
 
 router.post('/transation', transationController.registerTransaction);
 router.get('/transations/:id', transationController.getAllTransactionById);
+router.delete('/transations/:id', transationController.delete);
 
 
 
