@@ -15,6 +15,17 @@ interface ITransationsParams {
    id: number;
 }
 
+interface IUpdateTransationRequest {
+   params: {
+      id: number;
+   },
+   body: {
+      description: string;
+      amount: number;
+      type: string
+   }
+}
+
 export default {
    async registerTransaction(req: IRegisterTransactionRequest, res: Response): Promise<Response> {
       const { description, amount, type, userId } = req.body;
@@ -78,5 +89,34 @@ export default {
       } catch (error) {
          return res.status(500).json({ error: 'Erro ao deletar Transação.' });
       }
+   },
+
+   async update(req: IUpdateTransationRequest, res: Response): Promise<Response> {
+      const { id } = req.params;
+      const { description, amount, type } = req.body;
+
+      try {
+         const previousTransaction = await prisma.transaction.findUnique({
+            where: { id: Number(id) }
+         });
+
+         if (!previousTransaction) {
+            return res.status(404).json({ error: 'Transação não encontrada.' });
+         }
+
+         const transaction = await prisma.transaction.update({
+            where: { id: Number(id) },
+            data: {
+               description,
+               amount,
+               type,
+            }
+         });
+
+         return res.status(200).json(transaction);
+      } catch (error) {
+         return res.status(400).json({ error: 'Erro ao atualizar transação.' });
+      }
    }
+
 }
